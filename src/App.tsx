@@ -1,6 +1,21 @@
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthProvider';
+import { useEffect } from 'react';
 
 export function App() {
 
-  return <div>App</div>;
+  const { authToken } = useAuth();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authToken) {
+      navigate('/');
+    } else {
+      navigate('/auth');
+    }
+  }, [authToken]);
+
+  return <Outlet />
+
 }

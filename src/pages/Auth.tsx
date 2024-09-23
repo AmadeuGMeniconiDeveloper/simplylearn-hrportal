@@ -1,23 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '../contexts/AuthProvider';
-import { useNavigate } from 'react-router-dom';
 
 export function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigate = useNavigate();
-
-  const { authToken, handleLogin } = useAuth();
+  const { handleLogin } = useAuth();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     handleLogin(email, password);
   }
-
-  useEffect(() => {
-    if (authToken) navigate('/');
-  }, [authToken]);
 
   return (
     <div>

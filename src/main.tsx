@@ -5,25 +5,32 @@ import './styles.css';
 
 import { AuthProvider } from './contexts/AuthProvider.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { AppLayout } from './pages/Layout.tsx';
+import { Layout } from './pages/Layout.tsx';
 import { App } from './App';
 import { Auth } from './pages/Auth.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AppLayout />,
+    element: <App />,
     children: [
       {
         path: '/',
-        element: <App />,
+        element: <Layout />,
+        children: [
+          {
+            path: '/',
+            // element: <App />,
+          },
+        ],
       },
-    ],
+      {
+        path: 'auth',
+        element: <Auth />,
+      },
+    ]
   },
-  {
-    path: '/auth',
-    element: <Auth />,
-  },
+
 ]);
 
 createRoot(document.getElementById('root')!).render(

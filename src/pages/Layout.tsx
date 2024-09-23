@@ -1,19 +1,8 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
-import { useEffect } from 'react';
 
-export function AppLayout() {
-  const { authToken, handleLogout } = useAuth();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!authToken) {
-      navigate('/auth');
-    } else {
-      navigate('/');
-    }
-  }, [authToken]);
+export function Layout() {
+  const { handleLogout } = useAuth();
 
   return (
     <div style={containerStyles}>
@@ -24,7 +13,7 @@ export function AppLayout() {
         </div>
       </header>
       <main style={mainContainerStyles}>
-        <Outlet />
+      <Outlet  />
       </main>
     </div>
   );
