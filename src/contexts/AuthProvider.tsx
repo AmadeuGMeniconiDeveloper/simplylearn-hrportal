@@ -1,11 +1,12 @@
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 import { User } from '../api/@types';
-import { login } from '../api/auth';
+import { login, register } from '../api/auth';
 
 type AuthContext = {
   authToken?: string | null;
   loggedUser?: User | null;
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleLogin: (email: User["email"], password: User["password"]) => Promise<void>;
+  handleRegister: (email: User["email"], password: User["password"], role: User["role"]) => Promise<void>;
   handleLogout: () => void;
 };
 
@@ -17,7 +18,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [authToken, setAuthToken] = useState<string | null>();
   const [loggedUser, setLoggedUser] = useState<User | null>();
 
-  async function handleLogin(email: string, password: string) {
+  async function handleLogin(email: User["email"], password: User["password"]) {
     try {
       const [_, data] = await login(email, password);
 
@@ -31,6 +32,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function handleRegister(email: User["email"], password: User["password"], role: User["role"]) {
+    try {
+      const [_] = await register(email, password, role);
+
+    } catch (error) {
+      alert(error)
+    }
+  }
+
   function handleLogout() {
     setAuthToken(null);
     setLoggedUser(null);
@@ -38,7 +48,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   return (
     <AuthContext.Provider
-      value={{ authToken, loggedUser, handleLogin, handleLogout }}
+      value={{ authToken, loggedUser, handleLogin, handleRegister, handleLogout }}
     >
       {children}
     </AuthContext.Provider>

@@ -2,18 +2,18 @@ import { Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthProvider';
 
 export function Layout() {
-  const { handleLogout } = useAuth();
+  const { loggedUser, handleLogout } = useAuth();
 
   return (
     <div style={containerStyles}>
       <header style={headerContainerStyles}>
         <div style={headerStyles}>
-          <span>HR | App</span>
+          <span>HR | App {loggedUser?.email}</span>
           <button onClick={handleLogout}>Log out</button>
         </div>
       </header>
       <main style={mainContainerStyles}>
-      <Outlet  />
+        <Outlet  />
       </main>
     </div>
   );
@@ -24,7 +24,7 @@ const containerStyles: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  overflow: 'auto',
+  // overflow: 'auto',
 };
 
 const headerContainerStyles: React.CSSProperties = {
@@ -40,7 +40,7 @@ const headerContainerStyles: React.CSSProperties = {
 };
 
 const headerStyles: React.CSSProperties = {
-  height: '3rem',
+  height: '4rem',
   width: '100%',
   maxWidth: '1024px',
   display: 'flex',
@@ -51,6 +51,7 @@ const headerStyles: React.CSSProperties = {
 };
 
 const mainContainerStyles: React.CSSProperties = {
+  flex: 1,
   width: '100%',
   maxWidth: '1024px',
   marginTop: '2rem',

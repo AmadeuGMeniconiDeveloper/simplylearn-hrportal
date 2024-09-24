@@ -8,12 +8,38 @@ html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body  {
+  background-color: #F7F7F7;
+}
+
+a  {
+  color: #202020;
+}
+
 button {
   border: none;
   background-color: #202020;
   color: white;
-  padding-inline: 0.5rem;
-  padding-block: 0.25rem;
-  border-radius: 3px;
+  padding: 0.5rem 0.75rem;
+  font-weight: bold;
+  border-radius: 5px;
   cursor: pointer;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+label {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+input, select {
+  margin-top: 0.3rem;
+  padding: 0.5rem;
+
+  border-radius: 5px;
+  border: 1px solid #CCC;
 }

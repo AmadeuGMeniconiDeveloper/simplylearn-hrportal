@@ -4,17 +4,18 @@ import { useEffect } from 'react';
 
 export function App() {
 
-  const { authToken } = useAuth();
+  // const { loggedUser } = useAuth();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authToken) {
-      navigate('/');
-    } else {
-      navigate('/auth');
-    }
-  }, [authToken]);
+
+  // useEffect(() => {
+  //   if (loggedUser) {
+  //     navigate('/');
+  //   } else {
+  //     navigate('/sign-in');
+  //   }
+  // }, [loggedUser]);
 
   return <Outlet />
 
