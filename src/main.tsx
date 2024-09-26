@@ -1,42 +1,21 @@
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-import './styles.css';
+import "./styles.css";
 
-import { AuthProvider } from './contexts/AuthProvider.tsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { Layout } from './pages/Layout.tsx';
-import { App } from './App';
-import { Auth } from './pages/Auth.tsx';
+import { AuthProvider } from "./contexts/AuthProvider.tsx";
+import { BrowserRouter } from "react-router-dom";
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <App />,
-    children: [
-      {
-        path: '/',
-        element: <Layout />,
-        children: [
-          {
-            path: '/',
-            // element: <App />,
-          },
-        ],
-      },
-      {
-        path: 'auth',
-        element: <Auth />,
-      },
-    ]
-  },
+import { Router } from "./routes/Router.tsx";
+import { Toaster } from "sonner";
 
-]);
-
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <Toaster />
+        <Router />
+      </AuthProvider>
+    </BrowserRouter>
   </StrictMode>
 );
