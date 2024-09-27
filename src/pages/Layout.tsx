@@ -4,14 +4,14 @@ import { useAuth } from "../hooks/useAuth";
 import { Button, Container } from "react-bootstrap";
 
 export function Layout() {
-  const { handleLogout } = useAuth();
+  const { onLogout } = useAuth();
 
   return (
     <div style={containerStyles}>
       <header style={headerContainerStyles}>
         <div style={headerStyles}>
-          <span>HR | Portal</span>
-          <Button variant="dark" size="sm" onClick={handleLogout}>
+          <span style={{ fontSize: "1.25rem" }}>HR | Portal</span>
+          <Button variant="dark" size="sm" onClick={onLogout}>
             Log out
           </Button>
         </div>

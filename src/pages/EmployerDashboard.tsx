@@ -1,16 +1,52 @@
 import { useState } from "react";
 
-import { Button, Card, Spinner } from "react-bootstrap";
+import { useEmployer } from "../hooks/useEmployer";
+
+import { AddEmployeeModal } from "../components/AddEmployeeModal";
+import { LeaveProcessModal } from "../components/LeaveProcessModal ";
+
+import { Button, Card, Spinner, Toast } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 
-// import { User } from "../server/api/types";
-import { AddEmployeeModal } from "../components/AddEmployeeModal";
-import { useEmployees } from "../hooks/useEmployees";
+import { User } from "../server/api/types";
+import { toast } from "sonner";
 
 export function EmployerDashboard() {
-  const [showModal, setShowModal] = useState(false);
+  const [showAddEmployeeModal, setShowAddEmployeeModal] = useState(false);
+  const [showLeaveProcessModal, setShowLeaveProcessModal] = useState(false);
 
-  const { selectedEmployees, handleRemoveEmployee, isLoading } = useEmployees();
+  const [managedEmploye, setManagedEmploye] = useState<User>();
+
+  const { selectedEmployees, isLoading, onRemoveEmployee } = useEmployer();
+
+  function handleManageLeave(employee: User) {
+    setManagedEmploye(employee);
+    setShowLeaveProcessModal(true);
+  }
+
+  async function handleRemoveEmployee(employee: User) {
+    const { code, body } = await onRemoveEmployee(employee);
+
+    if (code !== "OK") {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    } else {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    }
+  }
 
   const renderEmplayeeList = selectedEmployees.map(employee => (
     <Card key={employee.id}>
@@ -26,7 +62,8 @@ export function EmployerDashboard() {
           <Card.Title
             style={{ display: "flex", justifyContent: "space-between" }}
           >
-            {employee.name}{" "}
+            {employee.name}
+
             <Button
               variant="outline"
               size="sm"
@@ -40,11 +77,15 @@ export function EmployerDashboard() {
               )}
             </Button>
           </Card.Title>
+
           <Card.Text style={{ fontSize: "14px" }}>
             Click bellow to expand on user details.
           </Card.Text>
         </div>
-        <Button variant="dark">View profile</Button>
+
+        <Button variant="dark" onClick={() => handleManageLeave(employee)}>
+          Manage leave
+        </Button>
       </Card.Body>
     </Card>
   ));
@@ -81,14 +122,33 @@ export function EmployerDashboard() {
                 Click bellow to add new employee.
               </Card.Text>
             </div>
-            <Button variant="dark" onClick={() => setShowModal(true)}>
+
+            <Button
+              variant="dark"
+              onClick={() => setShowAddEmployeeModal(true)}
+            >
               Add employee
             </Button>
           </Card.Body>
         </Card>
 
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-          <AddEmployeeModal setShowModal={setShowModal} />
+        <Modal
+          show={showAddEmployeeModal}
+          onHide={() => setShowAddEmployeeModal(false)}
+          centered
+        >
+          <AddEmployeeModal setShowModal={setShowAddEmployeeModal} />
+        </Modal>
+
+        <Modal
+          show={showLeaveProcessModal}
+          onHide={() => setShowLeaveProcessModal(false)}
+          centered
+        >
+          <LeaveProcessModal
+            setShowModal={setShowLeaveProcessModal}
+            employee={managedEmploye}
+          />
         </Modal>
       </div>
 

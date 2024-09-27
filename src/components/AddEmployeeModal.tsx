@@ -1,12 +1,38 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button, Modal, Spinner } from "react-bootstrap";
-import { useEmployees } from "../hooks/useEmployees";
+import { Button, Modal, Spinner, Table, Toast } from "react-bootstrap";
+import { useEmployer } from "../hooks/useEmployer";
+import { Message, User } from "../server/api/types";
+import { toast } from "sonner";
 
 interface AddEmployeeModalProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;
 }
 export function AddEmployeeModal({ setShowModal }: AddEmployeeModalProps) {
-  const { nonSelectedEmployees, handleAddEmployee, isLoading } = useEmployees();
+  const { nonSelectedEmployees, isLoading, onAddEmployee } = useEmployer();
+
+  async function handleAddEmployee(employee: User) {
+    const { code, body }: Message = await onAddEmployee(employee);
+
+    if (code === "OK") {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    } else {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    }
+  }
 
   return (
     <>
@@ -25,46 +51,51 @@ export function AddEmployeeModal({ setShowModal }: AddEmployeeModalProps) {
         style={{
           display: "flex",
           flexDirection: "column",
-          gap: "1rem",
           height: "30rem",
           overflowY: "auto",
         }}
       >
-        <div>
-          {nonSelectedEmployees.map(employee => (
-            <div
-              key={employee.id}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderTop: "1px solid #dee2e6",
-                paddingBlock: "0.5rem",
-              }}
-            >
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <span>
-                  <span>Name: </span> <strong>{employee.name}</strong>
-                </span>
-                <span>
-                  <span>ID: </span> <strong>{employee.id}</strong>
-                </span>
-              </div>
-              <Button
-                size="sm"
-                variant="dark"
-                onClick={() => handleAddEmployee(employee)}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <Spinner animation="border" size="sm" />
-                ) : (
-                  <span>Add</span>
-                )}
-              </Button>
-            </div>
-          ))}
-        </div>
+        <Table striped borderless>
+          <thead>
+            <tr>
+              <th>Employee</th>
+              <th style={{ textAlign: "right" }}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {nonSelectedEmployees.map(employee => (
+              <tr key={employee.id} style={{ verticalAlign: "middle" }}>
+                <td>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                    }}
+                  >
+                    <span>
+                      <strong>{employee.name}</strong>
+                    </span>
+                    <span>{employee.id}</span>
+                  </div>
+                </td>
+                <td style={{ textAlign: "right" }}>
+                  <Button
+                    size="sm"
+                    variant="dark"
+                    onClick={() => handleAddEmployee(employee)}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <Spinner animation="border" size="sm" />
+                    ) : (
+                      <span>Add</span>
+                    )}
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="outline" onClick={() => setShowModal(false)}>

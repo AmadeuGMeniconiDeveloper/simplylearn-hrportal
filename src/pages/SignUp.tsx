@@ -1,23 +1,65 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { User } from "../server/api/types";
+import { Link, useNavigate } from "react-router-dom";
+import { Message, User } from "../server/api/types";
 import { useAuth } from "../hooks/useAuth";
-import { Button, Card, Form, FormSelect, Spinner } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Form,
+  FormSelect,
+  Spinner,
+  Toast,
+} from "react-bootstrap";
+import { toast } from "sonner";
 
 export function SignUp() {
   const [name, setName] = useState<User["name"]>("");
   const [email, setEmail] = useState<User["email"]>("");
   const [password, setPassword] = useState<User["password"]>("");
-  const [role, setRole] = useState<User["role"]>("employer");
+  const [role, setRole] = useState<User["role"]>("employee");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { handleRegister } = useAuth();
+  const { onRegister } = useAuth();
+
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     setIsLoading(true);
-    await handleRegister(name, email, password, role);
+    const { code, body }: Message = await onRegister(
+      name,
+      email,
+      password,
+      role
+    );
+
+    if (code === "OK") {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            {body}
+          </Toast.Body>
+        </Toast>
+      ));
+
+      navigate("/sign-in", { replace: true });
+    } else {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    }
+
     setIsLoading(false);
   }
 
@@ -61,6 +103,7 @@ export function SignUp() {
               <Form.Label htmlFor="role">Role</Form.Label>
               <FormSelect
                 id="role"
+                defaultValue={role}
                 onChange={e => setRole(e.target.value as User["role"])}
                 required
               >

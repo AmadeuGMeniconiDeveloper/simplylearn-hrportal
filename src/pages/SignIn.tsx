@@ -1,27 +1,50 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 import Form from "react-bootstrap/Form";
-import { Button, Card, Spinner } from "react-bootstrap";
+import { Button, Card, Spinner, Toast } from "react-bootstrap";
+import { toast } from "sonner";
+import { Message } from "../server/api/types";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
 
-  const { handleLogin } = useAuth();
+  const { onLogin } = useAuth();
+
+  const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     setIsLoading(true);
-    await handleLogin(email, password);
-    setIsLoading(false);
+    const { code, body }: Message = await onLogin(email, password);
 
-    setEmail("");
-    setPassword("");
+    if (code === "OK") {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+
+      navigate("/", { replace: true });
+    } else {
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>{body}</Toast.Body>
+        </Toast>
+      ));
+    }
+
+    setIsLoading(false);
   }
 
   return (

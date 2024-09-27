@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { EmployerContext } from "../contexts/EmployeesProvider";
+import { EmployeeContext } from "../contexts/EmployeeProvider";
 
-export function useEmployees() {
-  const context = useContext(EmployerContext);
+export function useEmployee() {
+  const context = useContext(EmployeeContext);
 
   if (context === undefined) {
     throw new Error("useAuth hook must be used inside of a AuthProvider");

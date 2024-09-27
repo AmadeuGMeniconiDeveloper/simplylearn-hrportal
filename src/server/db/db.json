@@ -5,7 +5,8 @@
       "role": "employer",
       "name": "Admin",
       "email": "admin@email.com",
-      "password": "123"
+      "password": "123",
+      "selected": false
     },
     {
       "id": "975prr4za9b",
@@ -13,7 +14,11 @@
       "name": "Amadeu",
       "email": "amadeu@email.com",
       "password": "123",
-      "selected": true
+      "selected": true,
+      "leave": {
+        "status": "denied",
+        "body": "AHgggkjhsfku yskfus yksfs kuyfkuyfk uyksu kfk fskufs kuf kufk sfuyfk ukuyfkuyffk su sk fkyfuk usyf kuyfskuy ku uysf "
+      }
     },
     {
       "id": "qj3mfejv1r8",
@@ -21,7 +26,7 @@
       "name": "Sarah",
       "email": "sarah@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "fcl3emjb5cw",
@@ -29,7 +34,7 @@
       "name": "Rodrigo",
       "email": "rodrigo@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "76yr8vcll3u",
@@ -37,7 +42,7 @@
       "name": "Ted",
       "email": "ted@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "hk6fa9ha52",
@@ -45,7 +50,7 @@
       "name": "Samatha",
       "email": "samatha@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "w53yenmdyw",
@@ -69,7 +74,7 @@
       "name": "Miguel",
       "email": "miguel@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "jqv6ckl38np",
@@ -77,7 +82,7 @@
       "name": "Luiz",
       "email": "luiz@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "edqd7oivhw",
@@ -85,7 +90,7 @@
       "name": "Rafael",
       "email": "rafael@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "ot20hv8yp4g",
@@ -93,7 +98,7 @@
       "name": "Jesus",
       "email": "jesus@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "j3vsf7momhc",
@@ -101,7 +106,7 @@
       "name": "Lais",
       "email": "lais@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "7ql6vuqpysr",
@@ -109,7 +114,7 @@
       "name": "Hugo",
       "email": "hugo@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
     },
     {
       "id": "dbfzgblew2t",
@@ -117,7 +122,31 @@
       "name": "Tiago",
       "email": "tiago@email.com",
       "password": "123",
-      "selected": true
+      "selected": false
+    },
+    {
+      "id": "uwsthr5j98r",
+      "role": "employee",
+      "name": "Tom",
+      "email": "tom@email.com",
+      "password": "123",
+      "selected": false
+    },
+    {
+      "id": "n49zakolq9",
+      "role": "employee",
+      "name": "Mike",
+      "email": "mike@email.com",
+      "password": "123",
+      "selected": false
+    },
+    {
+      "id": "exriawhyh9s",
+      "role": "employee",
+      "name": "Amadeus",
+      "email": "amadeus@email.com",
+      "password": "123",
+      "selected": false
     }
   ],
   "sessions": [
@@ -125,6 +154,16 @@
       "id": "2m5lmmjclx",
       "user": "y4oar7p2tea",
       "token": "7l0yxp6ms5y"
+    },
+    {
+      "id": "ax2s0c9t19a",
+      "user": "qj3mfejv1r8",
+      "token": "pt6jifqk79p"
+    },
+    {
+      "id": "dk83dpes89n",
+      "user": "975prr4za9b",
+      "token": "5zkqiz6rock"
     }
   ]
 }

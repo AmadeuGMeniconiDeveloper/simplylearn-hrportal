@@ -1,10 +1,16 @@
 export interface User {
+  role: "employer" | "employee";
   id: string;
   name: string;
   email: string;
   password: string;
-  role: "employer" | "employee";
   selected: boolean;
+  leave?: Leave;
+}
+
+export interface Leave {
+  status: "pending" | "approved" | "denied";
+  body: string;
 }
 
 export interface Session {
@@ -12,3 +18,8 @@ export interface Session {
   user: string;
   token: string;
 }
+
+export type Message = {
+  code: "OK" | "FAIL";
+  body: string;
+};

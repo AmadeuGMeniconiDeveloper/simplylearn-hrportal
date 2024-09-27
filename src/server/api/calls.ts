@@ -1,7 +1,7 @@
 import { generateToken } from "./utils/tokenGenerator";
 import { generateUid } from "./utils/uidGenerator";
 
-import { Session, User } from "./types";
+import { Leave, Session, User } from "./types";
 
 export async function login(email: User["email"], password: User["password"]) {
   // Check if user exists  and password is correct
@@ -61,14 +61,14 @@ export async function register(
   const res = await fetch("http://localhost:3000/users", { method: "GET" });
   const users: User[] = await res.json();
 
-  let newUser: User;
+  let registeredUser: User;
 
-  const registeredUser = users.find(user => user.email === email);
+  const foundUser = users.find(user => user.email === email);
 
-  if (registeredUser) {
+  if (foundUser) {
     throw new Error("Email already in use");
   } else {
-    newUser = {
+    registeredUser = {
       id: await generateUid("users"),
       role,
       name,
@@ -82,67 +82,117 @@ export async function register(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newUser),
+      body: JSON.stringify(registeredUser),
     });
   }
 
-  return [201, newUser] as const;
+  return [201, { registeredUser: registeredUser }] as const;
 }
 
 export async function addEmployee(user: User) {
-  await fetch(`http://localhost:3000/users/${user.id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      selected: true,
-    }),
-  });
+  const employeeResponse = await fetch(
+    `http://localhost:3000/users/${user.id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        selected: true,
+      }),
+    }
+  );
+
+  const addedEmployee: User = await employeeResponse.json();
+
+  return [201, { addedEmployee: addedEmployee }] as const;
 }
 
 export async function removeEmployee(user: User) {
-  await fetch(`http://localhost:3000/users/${user.id}`, {
+  const employeeResponse = await fetch(
+    `http://localhost:3000/users/${user.id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        selected: false,
+      }),
+    }
+  );
+
+  const removedEmployee: User = await employeeResponse.json();
+
+  return [200, { removedEmployee: removedEmployee }] as const;
+}
+
+export async function getEmployees() {
+  const usersResponse = await fetch("http://localhost:3000/users", {
+    method: "GET",
+  });
+  const users: User[] = await usersResponse.json();
+
+  const employees: User[] = users.filter(user => user.role === "employee");
+
+  return [200, { employees: employees }] as const;
+}
+
+export async function processLeave(user: User, judgment: Leave["status"]) {
+  if (!user.leave) {
+    throw new Error("No leave to approve");
+  }
+
+  if (judgment === "pending") {
+    throw new Error("No process chosen");
+  }
+
+  const leaveResponse = await fetch(`http://localhost:3000/users/${user.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      selected: false,
+      leave: {
+        status: judgment,
+        body: user.leave.body,
+      },
     }),
   });
+
+  const processedLeave: Leave = await leaveResponse.json();
+
+  return [200, { processedLeave: processedLeave }] as const;
 }
 
-export async function getNonSelectedEmployees() {
-  const usersResponse = await fetch("http://localhost:3000/users", {
-    method: "GET",
+export async function createLeave(user: User, leaveReason: string) {
+  const leaveResponse = await fetch(`http://localhost:3000/users/${user.id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      leave: {
+        status: "pending",
+        body: leaveReason,
+      },
+    }),
   });
-  const users: User[] = await usersResponse.json();
 
-  const employees: User[] = users.filter(
-    user => user.role === "employee" && !user.selected
-  );
+  const employeeLeave: Leave = await leaveResponse.json();
 
-  return [200, employees] as const;
+  return [201, { employeeLeave: employeeLeave }] as const;
 }
 
-export async function getSelectedEmployees() {
-  const usersResponse = await fetch("http://localhost:3000/users", {
+export async function getLeave(user: User) {
+  const usersResponse = await fetch(`http://localhost:3000/users/${user.id}`, {
     method: "GET",
   });
-  const users: User[] = await usersResponse.json();
+  const foundUser: User = await usersResponse.json();
 
-  const addedEmployees: User[] = users.filter(
-    user => user.role === "employee" && user.selected
-  );
+  if (!foundUser.leave) {
+    throw new Error("No leave submitted");
+  }
 
-  return [200, addedEmployees] as const;
+  return [200, { leave: foundUser.leave }] as const;
 }

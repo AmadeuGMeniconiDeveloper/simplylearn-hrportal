@@ -1,4 +1,5 @@
-import { EmployerProvider } from "../contexts/EmployeesProvider";
+import { EmployeeProvider } from "../contexts/EmployeeProvider";
+import { EmployerProvider } from "../contexts/EmployerProvider";
 import { useAuth } from "../hooks/useAuth";
 import { EmployeeDashboard } from "./EmployeeDashboard";
 import { EmployerDashboard } from "./EmployerDashboard";
@@ -9,7 +10,11 @@ export function Home() {
   if (loggedUser) {
     switch (loggedUser.role) {
       case "employee": {
-        return <EmployeeDashboard />;
+        return (
+          <EmployeeProvider>
+            <EmployeeDashboard />
+          </EmployeeProvider>
+        );
       }
       case "employer": {
         return (
