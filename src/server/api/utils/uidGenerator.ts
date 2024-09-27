@@ -1,14 +1,14 @@
-const uids = new Set<string>();
+import { User } from "../types";
 
-export function generateUid() {
+export async function generateUid(table: string) {
   const newUid = Math.random().toString(36).substring(2);
 
-  if (uids.has(newUid)) {
-    generateUid();
+  const res = await fetch(`http://localhost:3000/${table}`, { method: "GET" });
+  const users: User[] = await res.json();
+
+  if (users.find(user => user.id === newUid)) {
+    generateUid(table);
   }
 
-  uids.add(newUid);
-
-  console.log("UID Generator - UID set: ", [...uids]);
   return newUid;
 }

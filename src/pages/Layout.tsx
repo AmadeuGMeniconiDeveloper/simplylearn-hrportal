@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
+import { Button, Container } from "react-bootstrap";
+
 export function Layout() {
   const { handleLogout } = useAuth();
 
@@ -9,12 +11,14 @@ export function Layout() {
       <header style={headerContainerStyles}>
         <div style={headerStyles}>
           <span>HR | Portal</span>
-          <button onClick={handleLogout}>Log out</button>
+          <Button variant="dark" size="sm" onClick={handleLogout}>
+            Log out
+          </Button>
         </div>
       </header>
-      <main style={mainContainerStyles}>
+      <Container style={{ marginBlock: "3.5rem" }}>
         <Outlet />
-      </main>
+      </Container>
     </div>
   );
 }
@@ -24,13 +28,14 @@ const containerStyles: React.CSSProperties = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  // overflow: "auto",
+  overflow: "auto",
 };
 
 const headerContainerStyles: React.CSSProperties = {
   width: "100%",
   position: "sticky",
   top: 0,
+  zIndex: 1,
   display: "flex",
   justifyContent: "center",
   backgroundColor: "rgba(220,220,220,0.35)",
@@ -48,12 +53,4 @@ const headerStyles: React.CSSProperties = {
   paddingInline: "2rem",
   height: "3.5rem",
   fontSize: "14px",
-};
-
-const mainContainerStyles: React.CSSProperties = {
-  flex: 1,
-  width: "100%",
-  maxWidth: "1360px",
-  marginInline: "auto",
-  padding: "2rem",
 };

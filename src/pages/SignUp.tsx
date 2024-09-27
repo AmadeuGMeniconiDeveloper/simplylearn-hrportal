@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { User } from "../server/api/@types";
+import { User } from "../server/api/types";
 import { useAuth } from "../hooks/useAuth";
+import { Button, Card, Form, FormSelect, Spinner } from "react-bootstrap";
 
 export function SignUp() {
+  const [name, setName] = useState<User["name"]>("");
   const [email, setEmail] = useState<User["email"]>("");
   const [password, setPassword] = useState<User["password"]>("");
   const [role, setRole] = useState<User["role"]>("employer");
-
   const [isLoading, setIsLoading] = useState(false);
 
   const { handleRegister } = useAuth();
@@ -16,65 +17,71 @@ export function SignUp() {
     e.preventDefault();
 
     setIsLoading(true);
-    await handleRegister(email, password, role);
+    await handleRegister(name, email, password, role);
     setIsLoading(false);
-
-    setEmail("");
-    setPassword("");
-    setRole("employer");
   }
 
   return (
     <div style={containerStyles}>
-      <form onSubmit={handleSubmit} style={formStyles}>
-        <h1>Register</h1>
-        <div style={inputContainerStyles}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
-            required
-          />
-        </div>
-        <div style={inputContainerStyles}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            onChange={e => setPassword(e.target.value)}
-            value={password}
-            required
-          />
-        </div>
-        <div style={inputContainerStyles}>
-          <label htmlFor="role">Role</label>
-          <select
-            id="role"
-            onChange={e => setRole(e.target.value as User["role"])}
-            value={role}
-            required
-          >
-            <option value="employer">Employer</option>
-            <option value="employee">Employee</option>
-          </select>
-        </div>
-        <button
-          type="submit"
-          disabled={isLoading}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {isLoading ? <span>Loading...</span> : <span>Sign up</span>}
-        </button>
-        <div style={{ fontSize: "12px" }}>
-          Got an account? <Link to="/sign-in">Sign in</Link>
-        </div>
-      </form>
+      <Card>
+        <Card.Body>
+          <Card.Title>Register</Card.Title>
+          <Form onSubmit={handleSubmit} style={formStyles}>
+            <Form.Group>
+              <Form.Label htmlFor="name">Name</Form.Label>
+              <Form.Control
+                id="name"
+                type="name"
+                onChange={e => setName(e.target.value)}
+                value={name}
+                required
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="email">Email</Form.Label>
+              <Form.Control
+                id="email"
+                type="email"
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+                required
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="password">Password</Form.Label>
+              <Form.Control
+                id="password"
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+                required
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="role">Role</Form.Label>
+              <FormSelect
+                id="role"
+                onChange={e => setRole(e.target.value as User["role"])}
+                required
+              >
+                <option value="employer">Employer</option>
+                <option value="employee">Employee</option>
+              </FormSelect>
+            </Form.Group>
+
+            <Button variant="dark" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                <span>Sign up</span>
+              )}
+            </Button>
+            <div style={{ fontSize: "12px" }}>
+              Have an account? <Link to="/sign-in">Sign in</Link>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
@@ -83,21 +90,11 @@ const containerStyles: React.CSSProperties = {
   height: "100vh",
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
 };
 
 const formStyles: React.CSSProperties = {
   display: "flex",
   gap: "0.75rem",
-  height: "fit-content",
-  flexDirection: "column",
-  marginInline: "auto",
-  backgroundColor: "#FFF",
-  boxShadow: "2px 2px 6px 0 rgba(0,0,0,0.1)",
-  padding: "1.25rem",
-  borderRadius: "1rem",
-};
-
-const inputContainerStyles: React.CSSProperties = {
-  display: "flex",
   flexDirection: "column",
 };

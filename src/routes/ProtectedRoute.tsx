@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { User } from "../server/api/@types";
+import { User } from "../server/api/types";
 import { Navigate } from "react-router-dom";
 import { NotAuthorized } from "../pages/401";
 import { useAuth } from "../hooks/useAuth";

@@ -1,3 +1,4 @@
+import { EmployerProvider } from "../contexts/EmployeesProvider";
 import { useAuth } from "../hooks/useAuth";
 import { EmployeeDashboard } from "./EmployeeDashboard";
 import { EmployerDashboard } from "./EmployerDashboard";
@@ -11,7 +12,11 @@ export function Home() {
         return <EmployeeDashboard />;
       }
       case "employer": {
-        return <EmployerDashboard />;
+        return (
+          <EmployerProvider>
+            <EmployerDashboard />
+          </EmployerProvider>
+        );
       }
     }
   }

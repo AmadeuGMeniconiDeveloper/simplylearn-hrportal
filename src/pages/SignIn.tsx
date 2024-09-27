@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
+import Form from "react-bootstrap/Form";
+import { Button, Card, Spinner } from "react-bootstrap";
+
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,35 +26,44 @@ export function SignIn() {
 
   return (
     <div style={containerStyles}>
-      <form onSubmit={handleSubmit} style={formStyles}>
-        <h1>Login</h1>
-        <div style={inputContainerStyles}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            onChange={e => setEmail(e.target.value)}
-            value={email}
-            required
-          />
-        </div>
-        <div style={inputContainerStyles}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            onChange={e => setPassword(e.target.value)}
-            value={password}
-            required
-          />
-        </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? <span>Loading...</span> : <span>Sign in</span>}
-        </button>
-        <div style={{ fontSize: "12px" }}>
-          Or create your <Link to="/sign-up">account</Link>
-        </div>
-      </form>
+      <Card>
+        <Card.Body>
+          <Card.Title>Login</Card.Title>
+          <Form onSubmit={handleSubmit} style={formStyles}>
+            <Form.Group>
+              <Form.Label htmlFor="email">Email</Form.Label>
+              <Form.Control
+                id="email"
+                type="email"
+                onChange={e => setEmail(e.target.value)}
+                value={email}
+                required
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label htmlFor="password">Password</Form.Label>
+              <Form.Control
+                id="password"
+                type="password"
+                onChange={e => setPassword(e.target.value)}
+                value={password}
+                required
+              />
+            </Form.Group>
+
+            <Button variant="dark" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                <span>Sign in</span>
+              )}
+            </Button>
+            <div style={{ fontSize: "12px" }}>
+              Or create your <Link to="/sign-up">account</Link>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
@@ -60,21 +72,11 @@ const containerStyles: React.CSSProperties = {
   height: "100vh",
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
 };
 
 const formStyles: React.CSSProperties = {
   display: "flex",
   gap: "0.75rem",
-  height: "fit-content",
-  flexDirection: "column",
-  marginInline: "auto",
-  backgroundColor: "#FFF",
-  boxShadow: "2px 2px 6px 0 rgba(0,0,0,0.1)",
-  padding: "1.25rem",
-  borderRadius: "1rem",
-};
-
-const inputContainerStyles: React.CSSProperties = {
-  display: "flex",
   flexDirection: "column",
 };

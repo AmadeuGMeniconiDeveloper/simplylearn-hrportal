@@ -1,14 +1,14 @@
-const tokens = new Set<string>();
+import { Session } from "../types";
 
-export function generateToken() {
+export async function generateToken() {
   const newToken = Math.random().toString(36).substring(2);
 
-  if (tokens.has(newToken)) {
+  const res = await fetch("http://localhost:3000/users", { method: "GET" });
+  const session: Session[] = await res.json();
+
+  if (session.find(session => session.token === newToken)) {
     generateToken();
   }
 
-  tokens.add(newToken);
-
-  console.log("Token Generator - Token set: ", [...tokens]);
   return newToken;
 }

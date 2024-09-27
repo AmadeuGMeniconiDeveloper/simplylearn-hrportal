@@ -1,4 +1,4 @@
-import { Card } from "../components/ActionCard";
+import { Button, Card, Form } from "react-bootstrap";
 import { useAuth } from "../hooks/useAuth";
 
 export function EmployeeDashboard() {
@@ -11,40 +11,77 @@ export function EmployeeDashboard() {
       {loggedUser && (
         <div
           style={{
-            display: "flex",
+            display: "grid",
             gap: "1.5rem",
             alignItems: "start",
-            marginTop: "1.5rem",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            marginTop: "1rem",
           }}
         >
-          <Card title="Welcome" subtitle={`${loggedUser.email}`}>
-            <button type="submit">View profile</button>
-          </Card>
-          <Card title="Leave details" subtitle="View your leave details">
-            <button type="submit">View details</button>
-          </Card>
-          <Card
-            title="Apply for leave"
-            subtitle="Describe your reason for leave"
-          >
-            <form
+          <Card>
+            <Card.Body
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "1.5rem",
+                justifyContent: "space-between",
+                minHeight: "9rem",
               }}
             >
-              <textarea
-                cols={30}
-                rows={10}
-                style={{
-                  resize: "vertical",
-                  maxHeight: "600px",
-                  minHeight: "100px",
-                }}
-              />
-              <button type="submit">Submit leave</button>
-            </form>
+              <div>
+                <Card.Title>Welcome</Card.Title>
+                <Card.Text style={{ fontSize: "14px" }}>
+                  {loggedUser.email}
+                </Card.Text>
+              </div>
+              <Button variant="dark">View details</Button>
+            </Card.Body>
+          </Card>
+          <Card>
+            <Card.Body
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                minHeight: "9rem",
+              }}
+            >
+              <Card.Title>View your leave details</Card.Title>
+
+              <Button variant="dark">View leave details</Button>
+            </Card.Body>
+          </Card>{" "}
+          <Card>
+            <Card.Body
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                gap: "1rem",
+              }}
+            >
+              <div>
+                <Card.Title>Apply for leave</Card.Title>
+                <Card.Text style={{ fontSize: "14px" }}>
+                  Fill wth reason for leave
+                </Card.Text>
+              </div>
+              <Form id="add-employee-form">
+                <Form.Group>
+                  <Form.Control
+                    as="textarea"
+                    required
+                    style={{
+                      resize: "vertical",
+                      maxHeight: "550px",
+                      minHeight: "100px",
+                    }}
+                  ></Form.Control>
+                </Form.Group>
+              </Form>
+              <Button variant="dark" type="submit" form="add-employee-form">
+                Apply leave
+              </Button>
+            </Card.Body>
           </Card>
         </div>
       )}

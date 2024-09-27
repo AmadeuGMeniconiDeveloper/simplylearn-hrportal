@@ -1,11 +1,13 @@
 import { createContext, PropsWithChildren } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { login, register } from "../server/api/auth";
+import { login, register } from "../server/api/calls";
 
 import { toast } from "sonner";
 
-import { User } from "../server/api/@types";
 import { useNavigate } from "react-router-dom";
+import { Toast } from "react-bootstrap";
+
+import { User } from "../server/api/types";
 
 type AuthContext = {
   authToken: string | null;
@@ -15,6 +17,7 @@ type AuthContext = {
     password: User["password"]
   ) => Promise<void>;
   handleRegister: (
+    name: User["name"],
     email: User["email"],
     password: User["password"],
     role: User["role"]
@@ -40,18 +43,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function handleLogin(email: User["email"], password: User["password"]) {
     try {
-      const [_, data] = await login(email, password);
+      const [, data] = await login(email, password);
 
       const { authToken, user } = data;
 
-      toast.success(`Welcome ${user.email}`);
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body>Welcome {user.email}.</Toast.Body>
+        </Toast>
+      ));
 
       setAuthToken(authToken);
       setLoggedUser(user);
 
       navigate("/", { replace: true });
     } catch {
-      toast.error("Invalid credentials");
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>Invalid credentials.</Toast.Body>
+        </Toast>
+      ));
 
       setAuthToken(null);
       setLoggedUser(null);
@@ -59,21 +76,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function handleRegister(
+    name: User["name"],
     email: User["email"],
     password: User["password"],
     role: User["role"]
   ) {
     try {
-      const [_, data] = await register(email, password, role);
+      await register(name, email, password, role);
 
-      toast.success("Account has been created successfully.", {
-        action: {
-          label: "Sign in",
-          onClick: () => navigate("/sign-in"),
-        },
-      });
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Success</strong>
+          </Toast.Header>
+          <Toast.Body
+            style={{ display: "flex", justifyContent: "space-between" }}
+          >
+            Account has been created successfully.{" "}
+          </Toast.Body>
+        </Toast>
+      ));
+
+      navigate("/sign-in");
     } catch {
-      toast.error("Account could not be created, please try again.");
+      toast.custom(() => (
+        <Toast>
+          <Toast.Header>
+            <strong className="me-auto">Error</strong>
+          </Toast.Header>
+          <Toast.Body>
+            Account could not be created, please try again.
+          </Toast.Body>
+        </Toast>
+      ));
     }
   }
 
