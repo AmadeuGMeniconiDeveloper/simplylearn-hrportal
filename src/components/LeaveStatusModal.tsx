@@ -35,7 +35,9 @@ export function LeaveStatusModal({ setShowModal }: LeaveStatusProps) {
             <thead>
               <tr>
                 <th>Reason</th>
-                <th>Status</th>
+                <th style={{ inlineSize: "10rem", textAlign: "center" }}>
+                  Status
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -43,9 +45,9 @@ export function LeaveStatusModal({ setShowModal }: LeaveStatusProps) {
                 <td>
                   <p
                     style={{
-                      inlineSize: "20rem",
                       overflow: "hidden",
                       wordBreak: "break-word",
+                      textAlign: "justify",
                     }}
                   >
                     {leave.body}
@@ -54,6 +56,7 @@ export function LeaveStatusModal({ setShowModal }: LeaveStatusProps) {
                 <td
                   style={{
                     textTransform: "capitalize",
+                    textAlign: "center",
                     color:
                       leave.status === "approved"
                         ? "green"

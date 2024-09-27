@@ -84,11 +84,18 @@ export function AddEmployeeModal({ setShowModal }: AddEmployeeModalProps) {
                     variant="dark"
                     onClick={() => handleAddEmployee(employee)}
                     disabled={isLoading}
+                    style={{
+                      minWidth: "3.5rem",
+                    }}
                   >
                     {isLoading ? (
-                      <Spinner animation="border" size="sm" />
+                      <Spinner
+                        animation="border"
+                        size="sm"
+                        style={{ verticalAlign: "middle" }}
+                      />
                     ) : (
-                      <span>Add</span>
+                      <span style={{ verticalAlign: "middle" }}>Add</span>
                     )}
                   </Button>
                 </td>

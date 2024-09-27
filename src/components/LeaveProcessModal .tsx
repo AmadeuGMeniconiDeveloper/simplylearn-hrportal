@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Button, Form, Modal, Table, Toast } from "react-bootstrap";
+import { Button, Form, Modal, Spinner, Table, Toast } from "react-bootstrap";
 import { Leave, Message, User } from "../server/api/types";
 import { useEmployer } from "../hooks/useEmployer";
 import { toast } from "sonner";
@@ -15,7 +15,7 @@ export function LeaveProcessModal({
 }: LeaveProcessProps) {
   const [status, setStatus] = useState<Leave["status"]>("pending");
 
-  const { onProcessLeave } = useEmployer();
+  const { onProcessLeave, isLoading } = useEmployer();
 
   async function handleLeaveProcessSubmit(e: React.FormEvent, employee: User) {
     e.preventDefault();
@@ -82,7 +82,9 @@ export function LeaveProcessModal({
             <thead>
               <tr>
                 <th>Reason</th>
-                <th>Action</th>
+                <th style={{ inlineSize: "10rem", paddingLeft: "1rem" }}>
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -90,15 +92,15 @@ export function LeaveProcessModal({
                 <td>
                   <p
                     style={{
-                      inlineSize: "15rem",
                       overflow: "hidden",
                       wordBreak: "break-word",
+                      textAlign: "justify",
                     }}
                   >
                     {employee.leave.body}
                   </p>
                 </td>
-                <td>
+                <td style={{ paddingLeft: "1rem" }}>
                   <Form
                     id="leave-form"
                     onSubmit={e => handleLeaveProcessSubmit(e, employee)}
@@ -136,7 +138,15 @@ export function LeaveProcessModal({
           form="leave-form"
           disabled={status === "pending"}
         >
-          Submit
+          {isLoading ? (
+            <Spinner
+              animation="border"
+              size="sm"
+              style={{ verticalAlign: "middle" }}
+            />
+          ) : (
+            <span>Submit</span>
+          )}
         </Button>
       </Modal.Footer>
     </>

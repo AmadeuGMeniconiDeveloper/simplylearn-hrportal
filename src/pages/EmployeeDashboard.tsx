@@ -1,4 +1,4 @@
-import { Button, Card, Form, Modal, Toast } from "react-bootstrap";
+import { Button, Card, Form, Modal, Spinner, Toast } from "react-bootstrap";
 import { useState } from "react";
 import { LeaveStatusModal } from "../components/LeaveStatusModal";
 import { useEmployee } from "../hooks/useEmployee";
@@ -12,7 +12,7 @@ export function EmployeeDashboard() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const { loggedUser } = useAuth();
-  const { leave, onCreateLeave } = useEmployee();
+  const { leave, onCreateLeave, isLoading } = useEmployee();
 
   async function handleSubmitLeave(e: React.FormEvent) {
     e.preventDefault();
@@ -94,7 +94,7 @@ export function EmployeeDashboard() {
               <div style={{ marginBottom: "1rem" }}>
                 <Card.Title>Apply for Leave</Card.Title>
                 <Card.Text style={{ fontSize: "14px" }}>
-                  Fill wth reason for leave
+                  Fill reasons for leave
                 </Card.Text>
               </div>
 
@@ -104,6 +104,7 @@ export function EmployeeDashboard() {
                     as="textarea"
                     required
                     style={formTextAreaStyles}
+                    minLength={20}
                     disabled={leave?.status === "pending"}
                     onChange={e => setLeaveReason(e.target.value)}
                     value={leaveReason}
@@ -116,9 +117,17 @@ export function EmployeeDashboard() {
                 type="submit"
                 form="add-employee-form"
                 disabled={leave?.status === "pending"}
-                style={{ alignSelf: "flex-end" }}
+                style={{ alignSelf: "flex-end", minWidth: "7rem" }}
               >
-                Submit leave
+                {isLoading ? (
+                  <Spinner
+                    animation="border"
+                    size="sm"
+                    style={{ verticalAlign: "middle" }}
+                  />
+                ) : (
+                  <span>Submit</span>
+                )}
               </Button>
             </Card.Body>
           </Card>
@@ -129,6 +138,7 @@ export function EmployeeDashboard() {
         show={showLeaveModal}
         onHide={() => setShowLeaveModal(false)}
         centered
+        size="lg"
       >
         <LeaveStatusModal setShowModal={setShowLeaveModal} />
       </Modal>
@@ -137,6 +147,7 @@ export function EmployeeDashboard() {
         show={showDetailsModal}
         onHide={() => setShowDetailsModal(false)}
         centered
+        size="lg"
       >
         <EmployeeDetailsModal setShowModal={setShowDetailsModal} />
       </Modal>

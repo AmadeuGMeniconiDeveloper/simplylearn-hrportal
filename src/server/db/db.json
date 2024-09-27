@@ -17,7 +17,7 @@
       "selected": true,
       "leave": {
         "status": "approved",
-        "body": "A"
+        "body": ", minWidth: \"7rem\", minWidth: \"7rem\", minWidth: \"7rem\""
       }
     },
     {
@@ -90,7 +90,7 @@
       "name": "Rafael",
       "email": "rafael@email.com",
       "password": "123",
-      "selected": false
+      "selected": true
     },
     {
       "id": "ot20hv8yp4g",

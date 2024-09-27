@@ -65,9 +65,14 @@ export function EmployerDashboard() {
             size="sm"
             onClick={() => handleRemoveEmployee(employee)}
             disabled={isLoading}
+            style={{ minWidth: "4.5rem" }}
           >
             {isLoading ? (
-              <Spinner animation="border" size="sm" />
+              <Spinner
+                animation="border"
+                size="sm"
+                style={{ verticalAlign: "middle" }}
+              />
             ) : (
               <span>Remove</span>
             )}
@@ -75,7 +80,7 @@ export function EmployerDashboard() {
           <Button
             variant="dark"
             onClick={() => handleManageLeave(employee)}
-            style={{ alignSelf: "flex-end" }}
+            style={{ alignSelf: "flex-end", minWidth: "8rem" }}
           >
             Manage leave
           </Button>
@@ -101,7 +106,7 @@ export function EmployerDashboard() {
             <Button
               variant="dark"
               onClick={() => setShowAddEmployeeModal(true)}
-              style={{ alignSelf: "flex-end" }}
+              style={{ alignSelf: "flex-end", minWidth: "8rem" }}
             >
               Add employee
             </Button>
@@ -117,6 +122,7 @@ export function EmployerDashboard() {
         show={showAddEmployeeModal}
         onHide={() => setShowAddEmployeeModal(false)}
         centered
+        size="lg"
       >
         <AddEmployeeModal setShowModal={setShowAddEmployeeModal} />
       </Modal>
@@ -125,6 +131,7 @@ export function EmployerDashboard() {
         show={showLeaveProcessModal}
         onHide={() => setShowLeaveProcessModal(false)}
         centered
+        size="lg"
       >
         <LeaveProcessModal
           setShowModal={setShowLeaveProcessModal}

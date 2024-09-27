@@ -107,8 +107,8 @@ export function SignUp() {
                 onChange={e => setRole(e.target.value as User["role"])}
                 required
               >
-                <option value="employer">Employer</option>
                 <option value="employee">Employee</option>
+                <option value="employer">Employer</option>
               </FormSelect>
             </Form.Group>
 
