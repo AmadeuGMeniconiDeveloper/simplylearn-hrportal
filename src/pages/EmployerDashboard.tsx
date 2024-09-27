@@ -50,72 +50,47 @@ export function EmployerDashboard() {
 
   const renderEmplayeeList = selectedEmployees.map(employee => (
     <Card key={employee.id}>
-      <Card.Body
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          minHeight: "9rem",
-        }}
-      >
+      <Card.Body style={cardBodyStyles}>
         <div>
-          <Card.Title
-            style={{ display: "flex", justifyContent: "space-between" }}
-          >
-            {employee.name}
-
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleRemoveEmployee(employee)}
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Spinner animation="border" size="sm" />
-              ) : (
-                <span>Remove</span>
-              )}
-            </Button>
-          </Card.Title>
+          <Card.Title>{employee.name}</Card.Title>
 
           <Card.Text style={{ fontSize: "14px" }}>
             Click bellow to expand on user details.
           </Card.Text>
         </div>
 
-        <Button variant="dark" onClick={() => handleManageLeave(employee)}>
-          Manage leave
-        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => handleRemoveEmployee(employee)}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Spinner animation="border" size="sm" />
+            ) : (
+              <span>Remove</span>
+            )}
+          </Button>
+          <Button
+            variant="dark"
+            onClick={() => handleManageLeave(employee)}
+            style={{ alignSelf: "flex-end" }}
+          >
+            Manage leave
+          </Button>
+        </div>
       </Card.Body>
     </Card>
   ));
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div style={containerStyles}>
       <h1 style={{ marginBottom: "1.5rem" }}>Employer Dashboard</h1>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "1.5rem",
-          alignItems: "start",
-          gridTemplateColumns: "repeat(3, 1fr)",
-        }}
-      >
+      <div style={gridContainerStyles}>
         <Card>
-          <Card.Body
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              minHeight: "9rem",
-            }}
-          >
+          <Card.Body style={cardBodyStyles}>
             <div>
               <Card.Title>Add new employee</Card.Title>
               <Card.Text style={{ fontSize: "14px" }}>
@@ -126,43 +101,54 @@ export function EmployerDashboard() {
             <Button
               variant="dark"
               onClick={() => setShowAddEmployeeModal(true)}
+              style={{ alignSelf: "flex-end" }}
             >
               Add employee
             </Button>
           </Card.Body>
         </Card>
-
-        <Modal
-          show={showAddEmployeeModal}
-          onHide={() => setShowAddEmployeeModal(false)}
-          centered
-        >
-          <AddEmployeeModal setShowModal={setShowAddEmployeeModal} />
-        </Modal>
-
-        <Modal
-          show={showLeaveProcessModal}
-          onHide={() => setShowLeaveProcessModal(false)}
-          centered
-        >
-          <LeaveProcessModal
-            setShowModal={setShowLeaveProcessModal}
-            employee={managedEmploye}
-          />
-        </Modal>
       </div>
 
-      <hr style={{ width: "100%", border: "1px solid #e2e2e2" }} />
+      <hr style={{ border: "1px solid #d2d2d2" }} />
 
-      <div
-        style={{
-          display: "grid",
-          gap: "1.5rem",
-          gridTemplateColumns: "repeat(3, 1fr)",
-        }}
+      <div style={gridContainerStyles}>{renderEmplayeeList}</div>
+
+      <Modal
+        show={showAddEmployeeModal}
+        onHide={() => setShowAddEmployeeModal(false)}
+        centered
       >
-        {renderEmplayeeList}
-      </div>
+        <AddEmployeeModal setShowModal={setShowAddEmployeeModal} />
+      </Modal>
+
+      <Modal
+        show={showLeaveProcessModal}
+        onHide={() => setShowLeaveProcessModal(false)}
+        centered
+      >
+        <LeaveProcessModal
+          setShowModal={setShowLeaveProcessModal}
+          employee={managedEmploye}
+        />
+      </Modal>
     </div>
   );
 }
+
+const containerStyles: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+};
+
+const gridContainerStyles: React.CSSProperties = {
+  display: "grid",
+  gap: "1.5rem",
+  gridTemplateColumns: "repeat(4, 1fr)",
+};
+
+const cardBodyStyles: React.CSSProperties = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  gap: "1.5rem",
+};

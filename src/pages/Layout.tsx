@@ -10,8 +10,8 @@ export function Layout() {
     <div style={containerStyles}>
       <header style={headerContainerStyles}>
         <div style={headerStyles}>
-          <span style={{ fontSize: "1.25rem" }}>HR | Portal</span>
-          <Button variant="dark" size="sm" onClick={onLogout}>
+          <span style={{ fontSize: "1rem" }}>HR | Portal</span>
+          <Button variant="outline-dark" size="sm" onClick={onLogout}>
             Log out
           </Button>
         </div>

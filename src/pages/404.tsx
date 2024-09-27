@@ -1,3 +1,4 @@
+import { Button, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 export function NotFound() {
@@ -5,15 +6,21 @@ export function NotFound() {
 
   return (
     <div style={containerStyles}>
-      <div style={cardStyles}>
-        <div>
-          <h1>404</h1>
-          <p style={{ fontSize: "12px" }}>Page not found...</p>
-        </div>
-        <button type="button" onClick={() => navigate("/", { replace: true })}>
-          Go home
-        </button>
-      </div>
+      <Card>
+        <Card.Body style={cardBodyStyles}>
+          <div>
+            <Card.Title>404</Card.Title>
+            <Card.Text>Page not found...</Card.Text>
+          </div>
+          <Button
+            variant="outline-dark"
+            type="button"
+            onClick={() => navigate("/", { replace: true })}
+          >
+            Go home
+          </Button>
+        </Card.Body>
+      </Card>
     </div>
   );
 }
@@ -22,17 +29,13 @@ const containerStyles: React.CSSProperties = {
   height: "100vh",
   display: "flex",
   alignItems: "center",
+  justifyContent: "center",
 };
 
-const cardStyles: React.CSSProperties = {
+const cardBodyStyles: React.CSSProperties = {
   display: "flex",
-  width: "15rem",
-  gap: "1.75rem",
-  height: "fit-content",
   flexDirection: "column",
-  marginInline: "auto",
-  backgroundColor: "#FFF",
-  boxShadow: "2px 2px 6px 0 rgba(0,0,0,0.1)",
-  padding: "1.25rem",
-  borderRadius: "1rem",
+  justifyContent: "space-between",
+  width: "15rem",
+  gap: "1.5rem",
 };

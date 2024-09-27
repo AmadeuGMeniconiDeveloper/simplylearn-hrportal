@@ -13,7 +13,7 @@ export function LeaveProcessModal({
   setShowModal,
   employee,
 }: LeaveProcessProps) {
-  const [status, setStatus] = useState<Leave["status"]>("approved");
+  const [status, setStatus] = useState<Leave["status"]>("pending");
 
   const { onProcessLeave } = useEmployer();
 
@@ -112,6 +112,7 @@ export function LeaveProcessModal({
                         setStatus(e.target.value as Leave["status"])
                       }
                     >
+                      <option value="pending"></option>
                       <option value="approved">Approve</option>
                       <option value="denied">Deny</option>
                     </Form.Select>
@@ -133,7 +134,7 @@ export function LeaveProcessModal({
           variant="dark"
           type="submit"
           form="leave-form"
-          disabled={employee?.leave?.status !== "pending"}
+          disabled={status === "pending"}
         >
           Submit
         </Button>
