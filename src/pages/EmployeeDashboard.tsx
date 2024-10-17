@@ -177,7 +177,7 @@ const cardBodyStyles: React.CSSProperties = {
 
 const formTextAreaStyles: React.CSSProperties = {
   resize: "none",
-  minHeight: "370px",
+  minHeight: "340px",
   marginBottom: "1.5rem",
   marginTop: "0.5rem",
 };
